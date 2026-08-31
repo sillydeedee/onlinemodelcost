@@ -1183,9 +1183,14 @@ fieldset {
   color: var(--body);
 }
 
-.prose {
-  max-width: 40rem;
-  margin-top: var(--space-lg);
+.prose h2 {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.seo-copy {
+  margin-top: var(--space-3xl);
+  padding-bottom: var(--space-xl);
 }
 
 .prose p,

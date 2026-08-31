@@ -1,19 +1,49 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { FALLBACK_ORIGIN, SITE_NAME, absoluteUrl } from "../lib/site";
+
+const origin = Astro.site ?? new URL(FALLBACK_ORIGIN);
+const homeUrl = absoluteUrl("/", origin);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: homeUrl,
+      description:
+        "Online Model Cost is an LLM cost calculator for one-call and monthly AI model cost comparison.",
+    },
+    {
+      "@type": "WebApplication",
+      name: "Online Model Cost",
+      url: homeUrl,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description:
+        "Browser LLM cost calculator and AI model price comparison for Claude, GPT, Gemini, and Grok.",
+    },
+  ],
+};
 ---
 
 <Layout
-  title="Model Cost"
-  description="Model Cost has two pages: a token calculator that prices one paste in your browser, and an LLM API cost calculator that turns tokens, daily requests, and users into a monthly bill."
+  title="Online Model Cost | LLM cost calculator and AI model price comparison"
+  description="Online Model Cost is an LLM cost calculator for one prompt and a monthly bill. Compare AI model cost and LLM price across Claude, GPT, Gemini, and Grok in your browser."
+  keywords="online model cost, llm cost calculator, llm cost comparison, llm price comparison, ai model cost comparison, ai model price, openai model price, llm cost optimization"
 >
   <main id="main" class="shell">
     <section class="hero">
-      <p class="eyebrow">One call, then a month</p>
-      <h1>Price one prompt before it ships.</h1>
+      <p class="eyebrow">LLM cost calculator</p>
+      <h1>Online Model Cost.</h1>
       <p class="lead">
-        The token page prices a single paste. The API cost page — a separate
-        document — turns tokens, requests per day, and users into a monthly
-        bill.
+        Price one prompt, then a month of calls. Compare AI model cost for
+        Claude, GPT, Gemini, and Grok without uploading the text.
       </p>
     </section>
 
@@ -36,5 +66,83 @@ import Layout from "../layouts/Layout.astro";
         <span class="card-cta">Open the API cost calculator →</span>
       </a>
     </div>
+
+    <article class="prose seo-copy">
+      <h2>What Online Model Cost is</h2>
+      <p>
+        Online Model Cost is a browser set of tools for AI model cost. Use it as
+        an LLM cost calculator when you need a number before a prompt ships, and
+        again when you need a sketch of a monthly bill. The site does not replace
+        a vendor invoice. It prices catalog rates for Claude, GPT, Gemini, and
+        Grok so you can run an LLM price check in one place. The prompt stays on
+        your device. Currency can display in USD or INR. That choice is not a
+        copy of your text.
+      </p>
+
+      <h2>LLM price check for one prompt</h2>
+      <p>
+        The token calculator is the first step in an AI model cost comparison.
+        Paste the system message, user turn, or excerpt you would send on one
+        call. The page counts characters and words as you type, then prices one
+        model per family. GPT tokens use tiktoken in this tab. Claude, Gemini,
+        and Grok counts are labeled estimates, not those vendors’ tokenizers.
+      </p>
+      <p>
+        The chart is a one-call LLM price for the prompt. Each bar shows that
+        model’s cost and token count. If the number is high, trim repeated
+        instructions, drop unused context, or switch to a cheaper model in the
+        same family. That is the LLM cost optimization this site can do: see the
+        price, then cut the prompt. When you open the monthly calculator from
+        that result, input tokens carry over from the GPT count. Output starts
+        at zero because there is no reply yet. Type an expected answer length
+        if you want completion tokens in the bill.
+      </p>
+
+      <h2>LLM cost calculator for a month of calls</h2>
+      <p>
+        The API cost page is a separate LLM cost calculator for traffic, not a
+        second paste box. Enter input and output tokens per request, requests
+        per day, users, and days in the month. The same usage is priced for one
+        Claude, GPT, Gemini, and Grok model so you get an LLM cost comparison
+        as a monthly sketch. Direct visits start empty. Arriving from the token
+        page fills the prompt’s token count. Use 1 user if requests per day is
+        already a team total. Leave output at 0 to bill the prompt only. The
+        figure is for planning, not an invoice and not a live quote from OpenAI,
+        Anthropic, Google, or xAI.
+      </p>
+
+      <h2>AI model price comparison and catalog rates</h2>
+      <p>
+        AI model price moves. This site does not scrape a live ticker on every
+        view. Catalog input and output rates per million tokens sit on the rates
+        page, taken from the OpenRouter public list for the allowlisted models.
+        That list is the source for the LLM price comparison in the charts.
+        OpenAI model price for the GPT rows follows that catalog, as do the
+        other families. A spreadsheet of dollars per million tokens does not
+        tell you what your text costs. The token page does. A single-call LLM
+        price does not tell you what a launch costs. The monthly calculator
+        does, once you add traffic.
+      </p>
+
+      <h2>FinOps, attribution, and what this site is not</h2>
+      <p>
+        Some teams want to track AI model cost attribution in FinOps stacks.
+        Online Model Cost does not connect to billing exports, tag traces, or
+        allocate spend to services. It is a calculator. You can still take a
+        number into the system that does attribution: this prompt is this many
+        tokens; this many requests per day is this monthly LLM cost. Prompt-layer
+        LLM cost optimization is what this page can do. Warehouse-level
+        allocation is not.
+      </p>
+      <p>
+        For a catalog LLM price comparison without a prompt, open
+        <a href="/rates">catalog rates</a>. For an LLM price calculator on one
+        call, open the <a href="/token-calculator">token calculator</a>. For a
+        monthly AI model cost comparison, open the
+        <a href="/api-cost-calculator">API cost calculator</a>. All three stay
+        in the browser. None of them upload the prompt.
+      </p>
+    </article>
   </main>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Layout>

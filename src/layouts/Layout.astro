@@ -7,12 +7,14 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  keywords?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, keywords } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 const origin = Astro.site ?? new URL(FALLBACK_ORIGIN);
 const canonical = absoluteUrl(Astro.url.pathname, origin);
+const ogImage = absoluteUrl("/og-image.png", origin);
 ---
 
 <!doctype html>
@@ -24,16 +26,23 @@ const canonical = absoluteUrl(Astro.url.pathname, origin);
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
     <meta name="description" content={description} />
+    {keywords ? <meta name="keywords" content={keywords} /> : null}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Online Model Cost — LLM cost calculator" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Online Model Cost — LLM cost calculator" />
     <meta name="theme-color" content="#ebe4d8" />
     <title>{title}</title>
     <script is:inline>
