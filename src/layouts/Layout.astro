@@ -45,6 +45,13 @@ const ogImage = absoluteUrl("/og-image.png", origin);
     <meta name="twitter:image:alt" content="Online Model Cost — LLM cost calculator" />
     <meta name="theme-color" content="#ebe4d8" />
     <title>{title}</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B525W1779S" is:inline></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "G-B525W1779S");
+    </script>
     <script is:inline>
       try {
         var storedTheme = localStorage.getItem("model-cost-theme");
