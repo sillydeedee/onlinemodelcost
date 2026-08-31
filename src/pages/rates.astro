@@ -1,0 +1,62 @@
+---
+import {
+  families,
+  fetchedAt,
+  getModelsByFamily,
+  priceNotes,
+} from "../lib/catalog";
+import { formatRate, formatVerifiedDate } from "../lib/format";
+import Layout from "../layouts/Layout.astro";
+
+const verified = formatVerifiedDate(fetchedAt);
+const groups = families.map((family) => ({
+  family,
+  models: getModelsByFamily(family.id),
+}));
+---
+
+<Layout
+  title="Catalog rates"
+  description="Input and output catalog rates per million tokens for the Claude, GPT, Gemini, and Grok models used on Model Cost. Sourced from the OpenRouter public list."
+>
+  <main id="main" class="shell">
+    <p class="eyebrow">Rates</p>
+    <h1>Catalog rates.</h1>
+    <p class="lead">
+      Per million tokens, for the models in the calculators. These are catalog
+      figures, not an invoice.
+    </p>
+
+    {
+      groups.map(({ family, models }) => (
+        <section class="rates-block">
+          <h2>{family.label}</h2>
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Input</th>
+                <th scope="col">Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              {models.map((model) => (
+                <tr>
+                  <th scope="row">{model.label}</th>
+                  <td>{formatRate(model.price.input)}</td>
+                  <td>{formatRate(model.price.output)}</td>
+                </tr>
+              ))}
+            </tbody>
+            </table>
+          </div>
+        </section>
+      ))
+    }
+
+    <p class="verified">
+      Rates last verified {verified}. {priceNotes}
+    </p>
+  </main>
+</Layout>

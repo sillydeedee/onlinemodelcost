@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Terms"
+  description="Model Cost figures are estimates from catalog rates, not an invoice or a quote from a model vendor."
+>
+  <main id="main" class="shell">
+    <p class="eyebrow">Terms</p>
+    <h1>How to read the numbers.</h1>
+    <div class="prose">
+      <p>
+        Model Cost is a free estimator. The figures on these pages are not a
+        bill, not a quote from Anthropic, OpenAI, Google, xAI, or OpenRouter,
+        and not a guarantee of what you will be charged.
+      </p>
+      <p>
+        Token counts for Claude, Gemini, and Grok are labeled estimates. GPT
+        uses tiktoken in this browser; that count can still differ from a
+        production API if the model or tokenizer changes.
+      </p>
+      <p>
+        Rates are catalog prices per million tokens, shown on the
+        <a href="/rates">rates</a> page. Vendors change prices. Cached or
+        last-verified dates can lag. INR display uses a fixed conversion for
+        the page, not a live FX feed.
+      </p>
+      <p>
+        You are responsible for how you use the tools and for checking the
+        vendor’s own pricing before you spend. The site is provided as-is, with
+        no warranty that the math or rates are complete or current.
+      </p>
+      <p>
+        Do not paste secrets you would not want sitting in a browser tab. See
+        also <a href="/privacy">Privacy</a>.
+      </p>
+    </div>
+  </main>
+</Layout>

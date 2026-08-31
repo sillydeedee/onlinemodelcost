@@ -1,0 +1,211 @@
+---
+import HowTo from "../components/HowTo.astro";
+import ModelSelects from "../components/ModelSelects.astro";
+import { fetchedAt, priceNotes } from "../lib/catalog";
+import { DAYS_PER_MONTH } from "../lib/cost";
+import { fxAsOf, fxNotes, getUsdToInr } from "../lib/fx";
+import { formatVerifiedDate } from "../lib/format";
+import Layout from "../layouts/Layout.astro";
+
+const verified = formatVerifiedDate(fetchedAt);
+const inrPerUsd = getUsdToInr();
+const howToSteps = [
+  {
+    title: "Enter tokens per request",
+    body: "Input and output counts for one call. Count a prompt on the token calculator first if you need those numbers.",
+  },
+  {
+    title: "Add traffic",
+    body: "Requests per day, users, and days in the month. Leave users at 1 if requests per day is already a team total.",
+  },
+  {
+    title: "Pick one model per family",
+    body: "Same usage is priced for Claude, GPT, Gemini, and Grok so you can compare a monthly bill.",
+  },
+  {
+    title: "Calculate, then adjust",
+    body: "If the chart is too high, cut tokens, drop requests, or switch to a cheaper model. The figure is a sketch, not an invoice.",
+  },
+];
+---
+
+<Layout
+  title="LLM API cost calculator"
+  description="LLM API cost calculator for a monthly bill: input and output tokens, requests per day, and users. Math stays in this browser."
+>
+  <main id="main" class="shell">
+    <p class="eyebrow">API cost calculator</p>
+    <h1>What a month of calls costs.</h1>
+    <p class="lead">
+      Enter tokens per request, how many requests run each day, and how many
+      users send them. We scale that to a monthly bill for one model in each
+      family.
+    </p>
+
+    <p class="privacy-note">
+      Privacy: you type counts, not the prompt. This page never sends the
+      numbers to a server.
+    </p>
+
+    <form id="api-cost-form" class="tool-panel" novalidate>
+      <p id="handoff-hint" class="hint handoff-hint" hidden>
+        Input is your prompt’s GPT token count. Output is 0 because this page
+        does not have a reply yet — type an expected answer length to include
+        it in the bill.
+      </p>
+      <div class="usage-grid">
+        <div class="field">
+          <label for="input-tokens">Input tokens per request</label>
+          <p class="hint" id="input-hint">
+            From the token calculator, or your own count.
+          </p>
+          <input
+            id="input-tokens"
+            name="inputTokens"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            placeholder="1000"
+            aria-describedby="input-hint"
+          />
+        </div>
+        <div class="field">
+          <label for="output-tokens">Output tokens per request</label>
+          <p class="hint" id="output-hint">
+            Expected reply length. Leave at 0 to bill the prompt only.
+          </p>
+          <input
+            id="output-tokens"
+            name="outputTokens"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            placeholder="0"
+            aria-describedby="output-hint"
+          />
+        </div>
+        <div class="field">
+          <label for="requests-per-day">Requests per day</label>
+          <p class="hint" id="requests-hint">
+            Calls one user (or your already-totaled traffic) makes in a day.
+          </p>
+          <input
+            id="requests-per-day"
+            name="requestsPerDay"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            placeholder="10"
+            aria-describedby="requests-hint"
+          />
+        </div>
+        <div class="field">
+          <label for="users">Users</label>
+          <p class="hint" id="users-hint">
+            Seats that each make those daily requests. Use 1 if requests per day
+            is already a team total.
+          </p>
+          <input
+            id="users"
+            name="users"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            placeholder="1"
+            aria-describedby="users-hint"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="days-per-month">Days in the month</label>
+        <p class="hint" id="days-hint">
+          Default {DAYS_PER_MONTH}. Change it if you want a shorter or longer
+          window.
+        </p>
+        <input
+          id="days-per-month"
+          name="daysPerMonth"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="31"
+          step="1"
+          placeholder={String(DAYS_PER_MONTH)}
+          aria-describedby="days-hint"
+        />
+      </div>
+
+      <ModelSelects />
+
+      <p class="field-error" id="usage-error" hidden role="alert">
+        Enter a number in each field.
+      </p>
+      <div class="actions">
+        <button class="button" type="submit">Calculate monthly bill</button>
+      </div>
+    </form>
+
+    <section id="monthly-results" class="results-block" hidden aria-labelledby="results-heading">
+      <div class="results-head">
+        <h2 id="results-heading">Monthly result</h2>
+        <fieldset class="currency-toggle">
+          <legend class="visually-hidden">Display currency</legend>
+          <label>
+            <input type="radio" name="currency" value="USD" checked />
+            USD
+          </label>
+          <label>
+            <input type="radio" name="currency" value="INR" disabled={inrPerUsd == null} />
+            INR
+          </label>
+        </fieldset>
+      </div>
+      {
+        inrPerUsd != null ? (
+          <p class="hint" id="fx-hint" hidden>
+            INR uses a fixed display rate of ₹{inrPerUsd} per $1 (as of {fxAsOf}
+            ). {fxNotes}
+          </p>
+        ) : (
+          <p class="hint" id="fx-hint" hidden>
+            INR is unavailable because the display rate is missing; costs stay
+            in USD.
+          </p>
+        )
+      }
+      <dl id="usage-stats" hidden></dl>
+      <div
+        id="compare-results"
+        hidden
+        tabindex="-1"
+        aria-live="polite"
+      >
+      </div>
+    </section>
+
+    <p class="verified">
+      Rates last verified {verified}. {priceNotes} Month length defaults to{" "}
+      {DAYS_PER_MONTH} days. See <a href="/rates">catalog rates</a>.
+    </p>
+
+    <HowTo heading="How to use the API cost calculator" steps={howToSteps} />
+
+    <section class="cta-band">
+      <h2>Need a token count first?</h2>
+      <p class="lead">
+        The token calculator prices one prompt and shows tokens per family.
+      </p>
+      <p>
+        <a class="button button-secondary" href="/token-calculator"
+          >Open the token calculator</a
+        >
+      </p>
+    </section>
+  </main>
+  <script src="../scripts/api-cost-calculator.ts"></script>
+</Layout>

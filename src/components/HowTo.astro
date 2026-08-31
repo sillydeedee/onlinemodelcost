@@ -1,0 +1,32 @@
+---
+interface Step {
+  title: string;
+  body: string;
+}
+
+interface Props {
+  heading: string;
+  steps: Step[];
+}
+
+const { heading, steps } = Astro.props;
+---
+
+<section class="howto" aria-labelledby="howto-heading">
+  <h2 id="howto-heading">{heading}</h2>
+  <ol class="howto-list">
+    {
+      steps.map((step, index) => (
+        <li>
+          <span class="howto-index" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

@@ -1,0 +1,139 @@
+---
+import HowTo from "../components/HowTo.astro";
+import ModelSelects from "../components/ModelSelects.astro";
+import {
+  fetchedAt,
+  priceNotes,
+} from "../lib/catalog";
+import { fxAsOf, fxNotes, getUsdToInr } from "../lib/fx";
+import { formatVerifiedDate } from "../lib/format";
+import Layout from "../layouts/Layout.astro";
+
+const verified = formatVerifiedDate(fetchedAt);
+const inrPerUsd = getUsdToInr();
+const howToSteps = [
+  {
+    title: "Enter the prompt you want to measure",
+    body: "A system message, user turn, document excerpt, or anything you would send on one call.",
+  },
+  {
+    title: "Read characters and words",
+    body: "Those two counts update in this tab as you type. The prompt stays on your device.",
+  },
+  {
+    title: "Pick one model per family and calculate",
+    body: "Claude, GPT, Gemini, and Grok each get one model. Calculate to see input cost on the chart. GPT tokens are exact; the others are estimates.",
+  },
+  {
+    title: "Trim the prompt if the cost is high",
+    body: "Cut repeated instructions, drop unused context, or switch to a cheaper model in the same family.",
+  },
+];
+---
+
+<Layout
+  title="Token calculator and counters"
+  description="Token calculator and counters for one prompt: characters, words, and tokens, plus a one-call cost. GPT uses tiktoken in this browser. Other families are labeled estimates. The prompt is not uploaded."
+>
+  <main id="main" class="shell">
+    <p class="eyebrow">Token calculator</p>
+    <h1>What this prompt costs on one call.</h1>
+    <p class="lead">
+      Drop in the text you would send. We count it here, then price one model
+      from each family.
+    </p>
+
+    <p class="privacy-note">
+      Privacy: your prompt stays in this tab while you move between pages.
+      Refreshing clears it. This page never sends the prompt to a server.
+    </p>
+
+    <form id="token-form" class="tool-panel" novalidate>
+      <div class="field">
+        <label for="prompt">Prompt to price</label>
+        <p class="hint" id="prompt-hint">
+          Enter a system message, user turn, or any text you would send. Works
+          on a phone keyboard.
+        </p>
+        <textarea
+          id="prompt"
+          name="prompt"
+          required
+          autocomplete="off"
+          spellcheck="false"
+          aria-describedby="prompt-hint"
+          placeholder="Enter the prompt here. It stays when you move between pages; refresh clears it."></textarea>
+        <p class="field-error" id="prompt-error" hidden role="alert">
+          Enter a prompt.
+        </p>
+      </div>
+
+      <div class="count-placeholders" aria-live="polite">
+        <div class="count-placeholder count-chars">
+          <span class="count-placeholder-label">Characters</span>
+          <output id="stat-chars" class="count-placeholder-value" for="prompt">0</output>
+        </div>
+        <div class="count-placeholder count-words">
+          <span class="count-placeholder-label">Words</span>
+          <output id="stat-words" class="count-placeholder-value" for="prompt">0</output>
+        </div>
+      </div>
+
+      <ModelSelects />
+
+      <div class="actions">
+        <button class="button" type="submit">Calculate one-call cost</button>
+      </div>
+    </form>
+
+    <section id="one-call-results" class="results-block" hidden aria-labelledby="results-heading">
+      <div class="results-head">
+        <h2 id="results-heading">Result</h2>
+        <fieldset class="currency-toggle">
+          <legend class="visually-hidden">Display currency</legend>
+          <label>
+            <input type="radio" name="currency" value="USD" checked />
+            USD
+          </label>
+          <label>
+            <input type="radio" name="currency" value="INR" disabled={inrPerUsd == null} />
+            INR
+          </label>
+        </fieldset>
+      </div>
+      {
+        inrPerUsd != null ? (
+          <p class="hint" id="fx-hint" hidden>
+            INR uses a fixed display rate of ₹{inrPerUsd} per $1 (as of {fxAsOf}
+            ). {fxNotes}
+          </p>
+        ) : (
+          <p class="hint" id="fx-hint" hidden>
+            INR is unavailable because the display rate is missing; costs stay
+            in USD.
+          </p>
+        )
+      }
+      <div
+        id="compare-results"
+        hidden
+        tabindex="-1"
+        aria-live="polite"
+      >
+      </div>
+      <p id="monthly-next" class="monthly-next" hidden>
+        <a class="button" id="monthly-calculator-link" href="/api-cost-calculator"
+          >Open monthly calculator</a
+        >
+      </p>
+    </section>
+
+    <p class="verified">
+      Rates last verified {verified}. {priceNotes} See{" "}
+      <a href="/rates">catalog rates</a>.
+    </p>
+
+    <HowTo heading="How to use the token calculator" steps={howToSteps} />
+  </main>
+  <script src="../scripts/token-calculator.ts"></script>
+</Layout>

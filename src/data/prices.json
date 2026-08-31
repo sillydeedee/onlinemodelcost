@@ -1,0 +1,109 @@
+{
+  "fetched_at": "2026-08-30T08:27:19.512Z",
+  "unit": "usd_per_million_tokens",
+  "source": "openrouter",
+  "notes": "Catalog rates from OpenRouter (public model list). Not a notarized vendor price sheet.",
+  "rates": {
+    "claude-fable-5": {
+      "input": 10,
+      "output": 50,
+      "cache_read": 1,
+      "cache_write": 12.5,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "claude-opus-5": {
+      "input": 5,
+      "output": 25,
+      "cache_read": 0.5,
+      "cache_write": 6.25,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "claude-sonnet-5": {
+      "input": 2,
+      "output": 10,
+      "cache_read": 0.2,
+      "cache_write": 2.5,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "claude-haiku-4-5": {
+      "input": 1,
+      "output": 5,
+      "cache_read": 0.1,
+      "cache_write": 1.25,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gpt-5.6-sol": {
+      "input": 2,
+      "output": 10,
+      "cache_read": 0.2,
+      "cache_write": 2.5,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gpt-5.6-terra": {
+      "input": 2,
+      "output": 12,
+      "cache_read": 0.2,
+      "cache_write": 2.5,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gpt-5.6-luna": {
+      "input": 0.2,
+      "output": 1.2,
+      "cache_read": 0.02,
+      "cache_write": 0.25,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gemini-3.1-pro-preview": {
+      "input": 2,
+      "output": 12,
+      "cache_read": 0.2,
+      "cache_write": 0.375,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gemini-3.7-flash": {
+      "input": 0.75,
+      "output": 3.75,
+      "cache_read": 0.075,
+      "cache_write": 0.041667,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "gemini-3.5-flash-lite": {
+      "input": 0.3,
+      "output": 2.5,
+      "cache_read": 0.03,
+      "cache_write": 0.083333,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "grok-4.6": {
+      "input": 2,
+      "output": 6,
+      "cache_read": 0.5,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "grok-4.5": {
+      "input": 2,
+      "output": 6,
+      "cache_read": 0.3,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    },
+    "grok-4.3": {
+      "input": 1.25,
+      "output": 2.5,
+      "cache_read": 0.2,
+      "source": "openrouter",
+      "source_label": "OpenRouter catalog"
+    }
+  }
+}

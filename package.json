@@ -9,10 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync:prices": "node scripts/sync-openrouter-prices.mjs"
   },
   "dependencies": {
-    "astro": "^7.2.9"
+    "astro": "^7.2.9",
+    "gpt-tokenizer": "^4.0.0"
   },
   "allowScripts": {
     "esbuild": true

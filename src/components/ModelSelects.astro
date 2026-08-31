@@ -1,0 +1,26 @@
+---
+import { defaultModelIds, families, getModelsByFamily } from "../lib/catalog";
+
+const familyModels = families.map((family) => ({
+  family,
+  models: getModelsByFamily(family.id),
+  selected: defaultModelIds[family.id],
+}));
+---
+
+<div class="model-selects" role="group" aria-label="Models">
+  {
+    familyModels.map(({ family, models, selected }) => (
+      <div class="field">
+        <label for={`compare-${family.id}`}>{family.label}</label>
+        <select id={`compare-${family.id}`} name={`compare-${family.id}`}>
+          {models.map((model) => (
+            <option value={model.id} selected={model.id === selected}>
+              {model.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    ))
+  }
+</div>

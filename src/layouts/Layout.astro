@@ -1,23 +1,77 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { FALLBACK_ORIGIN, SITE_NAME, absoluteUrl } from "../lib/site";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const origin = Astro.site ?? new URL(FALLBACK_ORIGIN);
+const canonical = absoluteUrl(Astro.url.pathname, origin);
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#ebe4d8" />
+    <title>{title}</title>
+    <script is:inline>
+      try {
+        var storedTheme = localStorage.getItem("model-cost-theme");
+        var theme =
+          storedTheme === "dark" || storedTheme === "light"
+            ? storedTheme
+            : window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
+        var themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) {
+          themeColor.setAttribute("content", theme === "dark" ? "#3a342c" : "#ebe4d8");
+        }
+      } catch (e) {}
+      try {
+        var nav = performance.getEntriesByType("navigation")[0];
+        var reload =
+          (nav && nav.type === "reload") ||
+          (typeof performance.navigation !== "undefined" &&
+            performance.navigation.type === 1);
+        if (reload) {
+          sessionStorage.removeItem("model-cost-prompt");
+          sessionStorage.removeItem("model-cost-token-handoff");
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page-frame">
+      <SiteHeader currentPath={currentPath} />
+      <slot />
+      <SiteFooter />
+    </div>
+    <script src="../scripts/theme.ts"></script>
+  </body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

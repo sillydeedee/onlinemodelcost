@@ -1,11 +1,42 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Model Cost"
+  description="Model Cost has two pages: a token calculator that prices one paste in your browser, and an LLM API cost calculator that turns tokens, daily requests, and users into a monthly bill."
+>
+  <main id="main" class="shell">
+    <section class="hero">
+      <p class="eyebrow">One call, then a month</p>
+      <h1>Price one prompt before it ships.</h1>
+      <p class="lead">
+        The token page prices a single paste. The API cost page — a separate
+        document — turns tokens, requests per day, and users into a monthly
+        bill.
+      </p>
+    </section>
+
+    <div class="card-grid">
+      <a class="choice-card" href="/token-calculator">
+        <p class="eyebrow">Live</p>
+        <h2>Token calculator</h2>
+        <p>
+          Count characters, words, and tokens for Claude, GPT, Gemini, and Grok.
+          GPT uses tiktoken in this tab. The other families are labeled
+          estimates. The paste never leaves the browser.
+        </p>
+        <span class="card-cta">Open the token calculator →</span>
+      </a>
+      <a class="choice-card" href="/api-cost-calculator">
+        <p class="eyebrow">Live</p>
+        <h2>API cost calculator</h2>
+        <p>
+          Tokens per request, requests per day, and users — scaled to a monthly
+          bill. Opens its own page, not a panel on this one.
+        </p>
+        <span class="card-cta">Open the API cost calculator →</span>
+      </a>
+    </div>
+  </main>
 </Layout>

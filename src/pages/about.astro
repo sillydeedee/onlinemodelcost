@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="About"
+  description="Model Cost is a browser calculator for one-call and monthly LLM API cost across Claude, GPT, Gemini, and Grok."
+>
+  <main id="main" class="shell">
+    <p class="eyebrow">About</p>
+    <h1>What this site is.</h1>
+    <div class="prose">
+      <p>
+        Model Cost is a small set of calculators for LLM API spend. You paste or
+        type counts here; the math runs in this browser. The prompt is not sent
+        to a server.
+      </p>
+      <p>There are two tools:</p>
+      <ul>
+        <li>
+          The <a href="/token-calculator">token calculator</a> counts characters
+          and words, then prices one paste across Claude, GPT, Gemini, and Grok.
+          GPT token counts use tiktoken in this tab. The other families are
+          labeled estimates.
+        </li>
+        <li>
+          The <a href="/api-cost-calculator">API cost calculator</a> takes tokens
+          per request, requests per day, and users, and scales that to a monthly
+          bill.
+        </li>
+      </ul>
+      <p>
+        Catalog input and output rates live on the <a href="/rates">rates</a>
+        page. They come from the OpenRouter public list. They are not an
+        invoice.
+      </p>
+    </div>
+  </main>
+</Layout>
