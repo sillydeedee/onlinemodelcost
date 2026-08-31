@@ -190,7 +190,10 @@ function initCurrencyToggle() {
 
 initCurrencyToggle();
 
-function applyHandoff(handoff: ReturnType<typeof readTokenHandoff>) {
+function applyHandoff(
+  handoff: ReturnType<typeof readTokenHandoff>,
+  showResults: boolean,
+) {
   if (!handoff) return;
 
   inputEl.value = String(handoff.inputTokens);
@@ -213,18 +216,18 @@ function applyHandoff(handoff: ReturnType<typeof readTokenHandoff>) {
   }
   usageError.hidden = true;
 
-  renderResults();
+  if (showResults) renderResults();
 }
 
 function restoreHandoff() {
   const fromUrl = readTokenHandoff(window.location.search);
   if (fromUrl) {
     writeSessionHandoff(fromUrl);
-    applyHandoff(fromUrl);
+    applyHandoff(fromUrl, true);
     return;
   }
 
-  applyHandoff(readSessionHandoff());
+  applyHandoff(readSessionHandoff(), false);
 }
 
 restoreHandoff();
