@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync:prices": "node scripts/sync-openrouter-prices.mjs"
+    "sync:prices": "node scripts/sync-openrouter-prices.mjs",
+    "deploy": "npm run build && wrangler pages deploy ./dist --project-name onlinemodelcost --branch main --commit-dirty=true"
   },
   "dependencies": {
     "astro": "^7.2.9",
@@ -18,5 +19,8 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "wrangler": "^4.127.1"
   }
 }
