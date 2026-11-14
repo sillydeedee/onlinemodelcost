@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-12T07:17:58.862Z",
+  "fetched_at": "2026-11-14T06:33:08.755Z",
   "unit": "usd_per_million_tokens",
   "source": "openrouter",
   "notes": "Catalog rates from OpenRouter (public model list). Not a notarized vendor price sheet.",
@@ -37,10 +37,10 @@
       "source_label": "OpenRouter catalog"
     },
     "gpt-5.6-sol": {
-      "input": 4.4,
-      "output": 22,
-      "cache_read": 0.44,
-      "cache_write": 5.5,
+      "input": 4,
+      "output": 20,
+      "cache_read": 0.4,
+      "cache_write": 5,
       "source": "openrouter",
       "source_label": "OpenRouter catalog"
     },
